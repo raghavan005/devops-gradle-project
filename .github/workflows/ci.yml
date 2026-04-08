@@ -1,27 +1,27 @@
-name : Java CI with Gradle
+name: Java CI with Gradle
 
-on : 
-  push :
-    branches: ["main"]
+on:
+  push:
+    branches: ["main", "master"]  # Added master since your terminal showed master earlier
   pull_request:
-    branches: ["main"]
+    branches: ["main", "master"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Everything below here must be indented further than 'build:'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Set up JDK 
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21' # Updated to 21 to match your build.gradle.kts
 
-    - name: Set up JDK 
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
+      - name: Grant execute permission
+        run: chmod +x gradlew
 
-    - name: Grant execute permission
-      run: chomd +x Gradlew
-
-    - name: Build with Gradle
-      run: ./gradlew build
+      - name: Build with Gradle
+        run: ./gradlew build
